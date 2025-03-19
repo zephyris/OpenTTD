@@ -106,7 +106,7 @@ public:
 		uint g = colour.g;
 		uint b = colour.b;
 
-		return Colour(r * nom / denom, g * nom / denom, b * nom / denom);
+		return Colour(r * nom / denom, g * nom / denom, b * nom / denom, colour.a);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public:
 	{
 		uint8_t d = MakeDark(colour.r, colour.g, colour.b);
 
-		return Colour(d, d, d);
+		return Colour(d, d, d, colour.a);
 	}
 
 	/**
@@ -150,7 +150,7 @@ public:
 		 *  information about the formula. */
 		uint grey = ((r * 19595) + (g * 38470) + (b * 7471)) / 65536;
 
-		return Colour(grey, grey, grey);
+		return Colour(grey, grey, grey, colour.a);
 	}
 };
 
