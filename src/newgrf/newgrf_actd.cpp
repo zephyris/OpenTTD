@@ -460,7 +460,9 @@ static void ParamSet(ByteReader &buf)
 
 			/* Only copy safe bits for static grfs */
 			if (_cur_gps.grfconfig->flags.Test(GRFConfigFlag::Static)) {
-				GrfMiscBits safe_bits = GrfMiscBit::SecondRockyTileSet;
+				GrfMiscBits safe_bits;
+				safe_bits.Set(GrfMiscBit::SecondRockyTileSet);
+				safe_bits.Set(GrfMiscBit::BaseSetTwoCompanyColours);
 
 				_misc_grf_features.Reset(safe_bits);
 				_misc_grf_features.Set(bits & safe_bits);

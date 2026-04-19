@@ -64,6 +64,7 @@ enum class GrfMiscBit : uint8_t {
 	AmbientSoundCallback = 4, ///< Enable ambient sound effect callback 144.
 	CatenaryOn3rdTrack = 5, ///< Unsupported: enable catenaries over third track type.
 	SecondRockyTileSet = 6, ///< Enable using the second rocky tile set.
+	BaseSetTwoCompanyColours = 7, ///< Enable using two company colour recolours for base set graphics.
 };
 
 using GrfMiscBits = EnumBitSet<GrfMiscBit, uint8_t>;

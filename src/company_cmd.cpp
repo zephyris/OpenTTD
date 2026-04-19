@@ -167,6 +167,10 @@ TextColour GetDrawStringCompanyColour(CompanyID company)
  */
 PaletteID GetCompanyPalette(CompanyID company)
 {
+	const Company *c = Company::GetIfValid(company);
+	if (c != nullptr && HasGrfMiscBit(GrfMiscBit::BaseSetTwoCompanyColours)) {
+		return SPR_2CCMAP_BASE + c->GetCompanyRecolourOffset(LS_DEFAULT);
+	}
 	return GetColourPalette(_company_colours[company]);
 }
 

@@ -413,6 +413,8 @@ extern void ResetGRM();
  */
 void ResetNewGRFData()
 {
+	/* Preserve static NewGRF features that shouldn't be wiped during game load */
+	bool has_baseset_2cc = _misc_grf_features.Test(GrfMiscBit::BaseSetTwoCompanyColours);
 	CleanUpStrings();
 	CleanUpGRFTownNames();
 
@@ -491,6 +493,7 @@ void ResetNewGRFData()
 
 	/* Reset misc GRF features and train list display variables */
 	_misc_grf_features = {};
+	if (has_baseset_2cc) _misc_grf_features.Set(GrfMiscBit::BaseSetTwoCompanyColours);
 
 	_loaded_newgrf_features.has_2CC           = false;
 	_loaded_newgrf_features.used_liveries     = 1 << LS_DEFAULT;
