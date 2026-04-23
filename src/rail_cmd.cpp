@@ -2442,7 +2442,7 @@ static void DrawTile_Rail(TileInfo *ti)
 {
 	const RailTypeInfo *rti = GetRailTypeInfo(GetRailType(ti->tile));
 	BridgePillarFlags blocked_pillars{};
-	PaletteID pal = GetCompanyPalette(GetTileOwner(ti->tile));
+	PaletteID pal = GetCompanyPalette(GetTileOwner(ti->tile), rti->flags.Test(RailTypeFlag::Uses2CC));
 
 	if (IsPlainRail(ti->tile)) {
 		TrackBits rails = GetTrackBits(ti->tile);
@@ -2574,7 +2574,7 @@ void DrawTrainDepotSprite(int x, int y, int dir, RailType railtype)
 	uint32_t offset = rti->GetRailtypeSpriteOffset();
 
 	if (image != SPR_FLAT_GRASS_TILE) image += offset;
-	PaletteID palette = GetCompanyPalette(_local_company);
+	PaletteID palette = GetCompanyPalette(_local_company, rti->flags.Test(RailTypeFlag::Uses2CC));
 
 	DrawSprite(image, PAL_NONE, x, y);
 

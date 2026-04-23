@@ -38,7 +38,7 @@ extern CompanyID _current_company;
 
 extern TypedIndexContainer<std::array<Colours, MAX_COMPANIES>, CompanyID> _company_colours;
 extern std::string _company_manager_face;
-PaletteID GetCompanyPalette(CompanyID company);
+PaletteID GetCompanyPalette(CompanyID company, bool use_2cc = false);
 
 /**
  * Is the current company the local company?

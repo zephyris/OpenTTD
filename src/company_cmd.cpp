@@ -165,8 +165,12 @@ TextColour GetDrawStringCompanyColour(CompanyID company)
  * @param company Company to get the colour of.
  * @return Palette for recolouring.
  */
-PaletteID GetCompanyPalette(CompanyID company)
+PaletteID GetCompanyPalette(CompanyID company, bool use_2cc)
 {
+	if (use_2cc) {
+		const Company *c = Company::Get(company);
+		return SPR_2CCMAP_BASE + c->livery[LS_DEFAULT].GetRecolourOffset(true);
+	}
 	return GetColourPalette(_company_colours[company]);
 }
 

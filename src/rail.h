@@ -31,6 +31,7 @@ enum class RailTypeFlag : uint8_t {
 	NoSpriteCombine = 3, ///< Bit number for using non-combined junctions.
 	Allow90Deg      = 4, ///< Bit number for always allowed 90 degree turns, regardless of setting.
 	Disallow90Deg   = 5, ///< Bit number for never allowed 90 degree turns, regardless of setting.
+	Uses2CC         = 6, ///< Bit number for using two company colours for recolouring.
 };
 using RailTypeFlags = EnumBitSet<RailTypeFlag, uint8_t>;
 

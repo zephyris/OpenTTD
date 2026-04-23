@@ -1412,7 +1412,8 @@ void DrawRoadTypeCatenary(const TileInfo *ti, RoadType rt, RoadBits rb)
 	/* Catenary uses 1st company colour to help identify owner.
 	 * For tiles with OWNER_TOWN or OWNER_NONE, recolour CC to grey as a neutral colour. */
 	Owner owner = GetRoadOwner(ti->tile, GetRoadTramType(rt));
-	PaletteID pal = (owner == OWNER_NONE || owner == OWNER_TOWN ? GetColourPalette(Colours::Grey) : GetCompanyPalette(owner));
+	bool uses_2cc = HasRoadCatenary(rt) && GetRoadTypeInfo(rt)->misc_flags.Test(RoadTypeMiscFlag::Uses2CC);
+	PaletteID pal = (owner == OWNER_NONE || owner == OWNER_TOWN ? GetColourPalette(Colours::Grey) : GetCompanyPalette(owner, uses_2cc));
 	uint8_t z_wires = (ti->tileh == SLOPE_FLAT ? 0 : TILE_HEIGHT) + BB_HEIGHT_UNDER_BRIDGE;
 	if (back != 0) {
 		/* The "back" sprite contains the west, north and east pillars.
@@ -1849,11 +1850,12 @@ static void DrawTile_Road(TileInfo *ti)
 		case RoadTileType::Depot: {
 			if (ti->tileh != SLOPE_FLAT) DrawFoundation(ti, FOUNDATION_LEVELED);
 
-			PaletteID palette = GetCompanyPalette(GetTileOwner(ti->tile));
-
 			RoadType road_rt = GetRoadTypeRoad(ti->tile);
 			RoadType tram_rt = GetRoadTypeTram(ti->tile);
 			const RoadTypeInfo *rti = GetRoadTypeInfo(road_rt == INVALID_ROADTYPE ? tram_rt : road_rt);
+			bool uses_2cc = (road_rt != INVALID_ROADTYPE && GetRoadTypeInfo(road_rt)->misc_flags.Test(RoadTypeMiscFlag::Uses2CC)) ||
+			                (tram_rt != INVALID_ROADTYPE && GetRoadTypeInfo(tram_rt)->misc_flags.Test(RoadTypeMiscFlag::Uses2CC));
+			PaletteID palette = GetCompanyPalette(GetTileOwner(ti->tile), uses_2cc);
 
 			int relocation = GetCustomRoadSprite(rti, ti->tile, RoadSpriteType::Depot);
 			bool default_gfx = relocation == 0;
@@ -1903,9 +1905,8 @@ static void DrawTile_Road(TileInfo *ti)
  */
 void DrawRoadDepotSprite(int x, int y, DiagDirection dir, RoadType rt)
 {
-	PaletteID palette = GetCompanyPalette(_local_company);
-
 	const RoadTypeInfo *rti = GetRoadTypeInfo(rt);
+	PaletteID palette = GetCompanyPalette(_local_company, rti->misc_flags.Test(RoadTypeMiscFlag::Uses2CC));
 	int relocation = GetCustomRoadSprite(rti, INVALID_TILE, RoadSpriteType::Depot);
 	bool default_gfx = relocation == 0;
 	if (default_gfx) {

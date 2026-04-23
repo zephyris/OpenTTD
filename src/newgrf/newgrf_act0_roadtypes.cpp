@@ -137,6 +137,12 @@ static ChangeInfoResult RoadTypeChangeInfo(uint first, uint last, int prop, Byte
 				rti->badges = ReadBadgeList(buf, GrfSpecFeature::RoadTypes);
 				break;
 
+			case 0x1F: // Miscellaneous properties
+				/* Bit 0: uses two company colours for recolouring. */
+				rti->misc_flags = static_cast<RoadTypeMiscFlags>(buf.ReadByte());
+				_loaded_newgrf_features.has_2CC |= rti->misc_flags.Test(RoadTypeMiscFlag::Uses2CC);
+				break;
+
 			default:
 				ret = ChangeInfoResult::Unknown;
 				break;
@@ -217,6 +223,10 @@ static ChangeInfoResult RoadTypeReserveInfo(uint first, uint last, int prop, Byt
 
 			case 0x1E: // Badge list
 				SkipBadgeList(buf);
+				break;
+
+			case 0x1F: // Miscellaneous properties
+				buf.ReadByte();
 				break;
 
 			default:

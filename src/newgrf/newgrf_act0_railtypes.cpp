@@ -99,6 +99,7 @@ static ChangeInfoResult RailTypeChangeInfo(uint first, uint last, int prop, Byte
 
 			case 0x10: // Rail Type flags
 				rti->flags = static_cast<RailTypeFlags>(buf.ReadByte());
+				_loaded_newgrf_features.has_2CC |= rti->flags.Test(RailTypeFlag::Uses2CC);
 				break;
 
 			case 0x11: // Curve speed advantage

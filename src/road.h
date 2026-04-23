@@ -30,6 +30,12 @@ enum class RoadTypeFlag : uint8_t {
 };
 using RoadTypeFlags = EnumBitSet<RoadTypeFlag, uint8_t>;
 
+/** Road/tram miscellaneous flag bit numbers. */
+enum class RoadTypeMiscFlag : uint8_t {
+	Uses2CC = 0, ///< Bit number for using two company colours for recolouring.
+};
+using RoadTypeMiscFlags = EnumBitSet<RoadTypeMiscFlag, uint8_t>;
+
 struct SpriteGroup;
 
 /** Sprite types for a roadtype. */
@@ -166,6 +172,8 @@ public:
 	EnumClassIndexContainer<std::array<const SpriteGroup *, to_underlying(RoadSpriteType::End)>, RoadSpriteType> group{};
 
 	std::vector<BadgeID> badges;
+
+	RoadTypeMiscFlags misc_flags{}; ///< Miscellaneous flags.
 
 	inline bool UsesOverlay() const
 	{
