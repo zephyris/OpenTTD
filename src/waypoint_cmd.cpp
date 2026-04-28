@@ -239,15 +239,14 @@ CommandCost CmdBuildRailWaypoint(DoCommandFlags flags, TileIndex start_tile, Axi
 	StationID est = StationID::Invalid();
 
 	const StationSpec *spec = StationClass::Get(spec_class)->GetSpec(spec_index);
-	RailStationTileLayout stl{spec, count, 1};
 
 	/* Check whether the tiles we're building on are valid rail or not. */
 	TileIndexDiff offset = TileOffsByAxis(OtherAxis(axis));
-	for (auto [i, it, tile] = std::make_tuple(0, stl.begin(), start_tile); i < count; ++i, ++it, tile += offset) {
+	for (auto [i, tile] = std::make_tuple(0, start_tile); i < count; ++i, tile += offset) {
 		CommandCost ret = IsValidTileForWaypoint(tile, axis, &est);
 		if (ret.Failed()) return ret;
 
-		ret = IsRailStationBridgeAboveOk(tile, spec, StationType::RailWaypoint, *it + axis);
+		ret = IsRailStationBridgeAboveOk(tile, spec, StationType::RailWaypoint, 0 + axis);
 		if (ret.Failed()) return ret;
 	}
 
@@ -303,13 +302,13 @@ CommandCost CmdBuildRailWaypoint(DoCommandFlags flags, TileIndex start_tile, Axi
 		wp->UpdateVirtCoord();
 
 		Company *c = Company::Get(wp->owner);
-		for (auto [i, it, tile] = std::make_tuple(0, stl.begin(), start_tile); i < count; ++i, ++it, tile += offset) {
+		for (auto [i, tile] = std::make_tuple(0, start_tile); i < count; ++i, tile += offset) {
 			uint8_t old_specindex = HasStationTileRail(tile) ? GetCustomStationSpecIndex(tile) : 0;
 			if (!HasStationTileRail(tile)) c->infrastructure.station++;
 			bool reserved = IsTileType(tile, TileType::Railway) ?
 					HasBit(GetRailReservationTrackBits(tile), AxisToTrack(axis)) :
 					HasStationReservation(tile);
-			MakeRailWaypoint(tile, wp->owner, wp->index, axis, *it, GetRailType(tile));
+			MakeRailWaypoint(tile, wp->owner, wp->index, axis, 0, GetRailType(tile));
 			SetCustomStationSpecIndex(tile, *specindex);
 
 			SetRailStationTileFlags(tile, spec);
