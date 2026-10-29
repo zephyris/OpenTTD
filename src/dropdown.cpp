@@ -453,15 +453,17 @@ struct DropdownWindow : Window {
 			return;
 		}
 
-		if (this->drag_mode) {
-			int result, click_result;
+		int result, click_result;
+		bool got_item = false;
 
+		if (this->drag_mode) {
 			if (!_left_button_clicked) {
 				this->drag_mode = false;
 				if (!this->GetDropDownItem(result, click_result)) {
 					if (this->options.Test(DropDownOption::InstantClose)) this->Close();
 					return;
 				}
+				got_item = true;
 				this->click_delay = 2;
 			} else {
 				if (_cursor.pos.y <= this->top + WidgetDimensions::scaled.dropdownlist.top) {
@@ -473,15 +475,15 @@ struct DropdownWindow : Window {
 					this->scrolling = 1;
 					return;
 				}
-
-				if (!this->GetDropDownItem(result, click_result)) return;
 			}
+		}
 
-			if (this->selected_result != result || this->selected_click_result != click_result) {
-				this->selected_result = result;
-				this->selected_click_result = click_result;
-				this->SetDirty();
-			}
+		if (!got_item && !this->GetDropDownItem(result, click_result)) return;
+
+		if (this->selected_result != result || this->selected_click_result != click_result) {
+			this->selected_result = result;
+			this->selected_click_result = click_result;
+			this->SetDirty();
 		}
 	}
 
